@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webczw.seata.product.dao.IProductDao">
+    <select id="selectProductById" parameterType="long" resultType="com.webczw.seata.product.vo.ProductVO">
+        SELECT product_id as productId,
+               product_code as productCode,
+               product_name as productName,
+               product_qty as productQty,
+               created_by as createdBy,
+               creation_date as creationDate,
+               last_updated_by as lastUpdatedBy,
+               last_update_date as lastUpdateDate
+        FROM seata_product_t
+        WHERE enable_flag='Y' and product_id = #{productId}
+    </select>
+    
+    <update id="deductionProductQty">
+        update seata_product_t set product_qty=product_qty-#{orderQyt},
+                                   last_update_date=now(),
+                                   last_updated_by=#{lastUpdatedBy}
+        where enable_flag='Y' and product_id = #{productId}
+    </update>
+</mapper>
